@@ -1,34 +1,71 @@
 <template>
-  <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <img
+    alt="Vue logo"
+    class="logo"
+    src="./assets/logo.svg"
+    width="125"
+    height="125"
+  />
   <div class="mainContainer">
     <div class="boggle-board boggleItems">
-     </div>
-    <div class="timerArea">
-      <BoggleTimer />
+      <BoggleCell
+        @boggleCellCreater="boggleCellCreater"
+        class="boggle-cell"
+        v-for="(cell, index) in 16"
+        :key="index"
+      />
     </div>
+    <div class="timerArea">
+      <BoggleTimer :timer-state="timerOn()" />
+    </div>
+  </div>
+  <div class="refreshArea">
+  <div class="refresh">
+    <RefreshButton />
+  </div>
   </div>
 </template>
 
 <script>
-import BoggleTimer from "./components/BoggleTimer.vue"
+import BoggleTimer from "./components/BoggleTimer.vue";
+import RefreshButton from "./components/RefreshButton.vue";
+import BoggleCell from "./components/BoggleCell.vue";
 export default {
-  components:{
+  components: {
     BoggleTimer,
-  }
-
-}
+    RefreshButton,
+    BoggleCell,
+  },
+  methods: {
+    boggleCellCreater(letter) {
+      console.log(`this is the $emit: ${letter}`);
+    },
+    timerOn() {
+      return "timerProgress";
+    },
+  },
+};
 </script>
 
 <style>
-:root{
+:root {
   --color-primary: #42b883;
   --color-secondary-dark: #388f68;
   --border-radius: 8px;
 }
-  .boggleItems{
-    border-radius: var(--border-radius);
+.boggleItems {
+  border-radius: var(--border-radius);
+  border: 1px #42b883 solid;
+}
 
-  }
+.mainContainer {
+  display: flex;
+  justify-content: space-around;
+}
+
+.timerArea {
+  height: 100%;
+}
 
 /* Boggle Board */
 .boggle-board {
@@ -46,7 +83,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  font-size: 32px;
   font-weight: bold;
   background-color: #ffffff;
   border-radius: 5px;
@@ -107,4 +144,10 @@ export default {
   height: 80px;
 }
 
+.refreshArea{
+  margin-top: 10px;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+}
 </style>
