@@ -1,6 +1,6 @@
 <template>
   <div class="cell" @click="randomNumberSmall">
-    {{ randomLetter }}
+    {{ randomLetter() }}
   </div>
 </template>
   
@@ -11,6 +11,7 @@ export default {
     return {
       letter: "",
       letters: [],
+      usedDice: [],
       lettersList: `aaafrs
 aaeeee
 aafirs
@@ -41,31 +42,38 @@ ooottu`,
   methods: {
     createArray() {
       const letterArray = this.lettersList;
-      this.letters = this.letters.length < 1 ? letterArray.split("\n").map((set) => set.split('')) : this.letters
-      console.log(`what child is this? : ${this.letters[0][1]}`);
+      this.letters = this.letters.length < 1 ? letterArray.split("\n").map((set) => set.split("")) : this.letters;
       console.log("array created!!!");
-      
     },
 
     randomNumber() {
-      return Math.floor(Math.random() * this.letters.length);
+              let randomDice;
+              do {
+                  randomDice = Math.floor(Math.random() * this.letters.length);
+                  console.log("hello isreal");
+              } while (this.usedDice.includes(randomDice));
+
+              this.usedDice.push(randomDice)
+              return randomDice;
+          },
+
+    randomNumberSmall() {
+      return Math.floor(Math.random() * 6);
     },
-    randomNumberSmall(){
-        return Math.floor(Math.random() * 6);
-        
-    }
+
+    randomLetter() {
+      const randomDice = this.randomNumber()
+      const randomNum = randomDice
+      const randomNumSM = this.randomNumberSmall();
+      if (this.letters.length > 0) {
+        return this.letters[randomNum][randomNumSM];
+      } else {
+        return null;
+      }
+    },
   },
   computed: {
-    randomLetter() {
-      const randomNum = this.randomNumber()
-      const randomNumSM = this.randomNumberSmall()
-      if(this.letters.length > 0 ){
-        return this.letters[randomNum][randomNumSM]
-      } else{
-        return null
-      }
-      
-    },
+   
   },
   mounted() {
     this.createArray();
