@@ -9,10 +9,11 @@
   <div class="mainContainer">
     <div class="boggle-board boggleItems">
       <BoggleCell
-        @boggleCellCreater="boggleCellCreater"
+        @minimize-dice="removeDice"
         class="boggle-cell"
         v-for="(cell, index) in 16"
         :key="index"
+        :used-dice="usedDice"
       />
     </div>
     <div class="timerArea">
@@ -36,9 +37,16 @@ export default {
     RefreshButton,
     BoggleCell,
   },
+  data(){
+    return{
+      usedDice:[]
+    }
+  },
   methods: {
-    boggleCellCreater(letter) {
-      console.log(`this is the $emit: ${letter}`);
+    removeDice(randomNumber){
+      console.log("randomNumberFrom Child", randomNumber);
+      console.log("usedList:" , this.usedDice);
+      this.usedDice.push(randomNumber)
     },
     timerOn() {
       return "timerProgress";
