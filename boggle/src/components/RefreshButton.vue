@@ -1,5 +1,5 @@
 <template>
-  <div class="boggleItems refresh" @click="renderDice">REFRESH BOARD</div>
+  <div class="boggleItems refresh" @click="createArray">REFRESH BOARD</div>
 
   <!-- <div class="boggleItems popUp" :class="{hidden: !popUpStatus}">
     Are you sure?
@@ -14,66 +14,53 @@
 
 <script>
 export default {
-  name: "RefreshButton",
+  name: "DiceCreater",
   data() {
     return {
       letters: [],
-      letterCount: {
-        a: 23,
-        b: 1,
-        c: 4,
-        d: 7,
-        e: 26,
-        f: 8,
-        g: 5,
-        h: 7,
-        i: 12,
-        j: 1,
-        k: 1,
-        l: 7,
-        m: 5,
-        n: 15,
-        o: 13,
-        p: 5,
-        q: 2,
-        r: 13,
-        s: 9,
-        t: 15,
-        u: 9,
-        v: 2,
-        w: 3,
-        x: 1,
-        y: 6,
-        z: 2,
-      },
-    };
+      lettersList: `000000
+aaafrs
+aaeeee
+aafirs
+adennn
+aeeeem
+aeegmu
+aegmnn
+afirsy
+bjkqxz
+ccenst
+ceiilt
+ceilpt
+ceipst
+ddhnot
+dhhlor
+dhlnor
+dhlnor
+eiiitt
+emottt
+ensssu
+fiprsy
+gorrvw
+iprrry
+nootuw
+ooottu`,
+    }
   },
   methods: {
+
     createArray() {
-      const letterObj = this.letterCount;
-      for (const times in letterObj) {
-        const repeatedLetters = times.repeat(letterObj[times]);
-        for (const char of repeatedLetters) {
-          this.letters.push(char);
-        }
-      }
-    },
-
-    randomNumber() {
-      return Math.floor(Math.random() * this.letters.length);
-    },
-
-    renderDice() {
-      const randomNum = this.randomNumber();
-      return "boggleCell" ,this.letters[randomNum]
+      const letterArray = this.lettersList;
+      this.letters = letterArray.split("\n").map((set) => set.split(""));
+      this.$emit("createdList", this.letters)
     },
   },
-  
   mounted() {
-    this.createArray();
-  },
-};
+    this.createArray()
+  }
+}
 </script>
+
+
 
 <style>
 .refresh {

@@ -1,29 +1,22 @@
 <template>
-  <img
-    alt="Vue logo"
-    class="logo"
-    src="./assets/logo.svg"
-    width="125"
-    height="125"
-  />
+  <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
   <div class="mainContainer">
-    <div class="boggle-board boggleItems">
-      <BoggleCell
-        @minimize-dice="removeDice"
-        class="boggle-cell"
-        v-for="(cell, index) in 16"
-        :key="index"
-        :used-dice="usedDice"
-      />
+    <div class="main-area">
+      <div class="boggle-board boggleItems">
+        <BoggleCell class="boggle-cell" v-for="index in 16" :key="index"
+         :dice-list="diceArray"
+          @minimize-dice="removeDice"
+          :usedDice="usedDice" />
+      </div>
+      <div class="timerArea">
+        <BoggleTimer :timer-state="timerOn()" />
+      </div>
     </div>
-    <div class="timerArea">
-      <BoggleTimer :timer-state="timerOn()" />
+    <div class="refreshArea">
+      <div class="refresh">
+        <RefreshButton @createdList="newList" />
+      </div>
     </div>
-  </div>
-  <div class="refreshArea">
-  <div class="refresh">
-    <RefreshButton />
-  </div>
   </div>
 </template>
 
@@ -37,20 +30,28 @@ export default {
     RefreshButton,
     BoggleCell,
   },
-  data(){
-    return{
-      usedDice:[]
+  data() {
+    return {
+      diceArray: [],
+      usedDice: new Set(),
+      use: []
     }
   },
   methods: {
-    removeDice(randomNumber){
-      console.log("randomNumberFrom Child", randomNumber);
-      console.log("usedList:" , this.usedDice);
-      this.usedDice.push(randomNumber)
+    removeDice(randomDice) {
+      this.usedDice.add(parseInt(randomDice))
+      console.log("randomNumberFrom Child", randomDice);
     },
+
     timerOn() {
       return "timerProgress";
     },
+
+    newList(val) {
+      console.log("new list" + " " + val);
+      this.diceArray = val;
+      console.log(typeof this.diceArray);
+    }
   },
 };
 </script>
@@ -61,14 +62,37 @@ export default {
   --color-secondary-dark: #388f68;
   --border-radius: 8px;
 }
+
 .boggleItems {
   border-radius: var(--border-radius);
   border: 1px #42b883 solid;
 }
 
+.logo {
+  height: 100px;
+  width: auto;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: -2;
+  opacity: 60%;
+}
+
 .mainContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
+  /* width: 100%; */
+}
+
+.main-area {
+  display: flex;
+  gap: 25px;
 }
 
 .timerArea {
@@ -152,9 +176,9 @@ export default {
   height: 80px;
 }
 
-.refreshArea{
+.refreshArea {
   margin-top: 10px;
-  width: 100vw;
+  /* width: 100vw; */
   display: flex;
   justify-content: center;
 }
