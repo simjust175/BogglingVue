@@ -1,9 +1,15 @@
 <template>
+  <div class="cona">
   <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
   <div class="mainContainer">
+    <div class="refreshArea">
+      <div class="refresh">
+        <RefreshButton @createdList="newList" />
+      </div>
+    </div>
     <div class="main-area">
       <div class="boggle-board boggleItems">
-        <BoggleCell class="boggle-cell" v-for="index in 16" :key="index"
+        <BoggleCell class="boggle-cell" :class="shuffle" v-for="index in 16" :key="index"
          :dice-list="diceArray"
           @minimize-dice="removeDice"
           :usedDice="usedDice" />
@@ -11,13 +17,13 @@
       <div class="timerArea">
         <BoggleTimer :timer-state="timerOn()" />
       </div>
+      <div class="design circle1"></div>
+      <div class="design circle2"></div>
+      <div class="design circle3"></div>
     </div>
-    <div class="refreshArea">
-      <div class="refresh">
-        <RefreshButton @createdList="newList" />
-      </div>
-    </div>
+    
   </div>
+</div>
 </template>
 
 <script>
@@ -34,25 +40,29 @@ export default {
     return {
       diceArray: [],
       usedDice: new Set(),
-      use: []
+      shuffle: ""
     }
   },
   methods: {
     removeDice(randomDice) {
       this.usedDice.add(parseInt(randomDice))
-      console.log("randomNumberFrom Child", randomDice);
     },
 
     timerOn() {
       return "timerProgress";
     },
 
-    newList(val) {
-      console.log("new list" + " " + val);
-      this.diceArray = val;
-      console.log(typeof this.diceArray);
+    newList(list) {
+      this.diceArray = list;
     }
   },
+  watch:{
+    diceArray(){
+      this.usedDice.clear()
+      this.shuffle = "shuffle"
+      
+    }
+  }
 };
 </script>
 
@@ -63,6 +73,11 @@ export default {
   --border-radius: 8px;
 }
 
+.conta{
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
 .boggleItems {
   border-radius: var(--border-radius);
   border: 1px #42b883 solid;
@@ -76,6 +91,41 @@ export default {
   left: 10px;
   z-index: -2;
   opacity: 60%;
+  transition: all 0.4s ease;
+}
+
+.logo:hover{
+  transform:scale(1.08);
+}
+
+.design{
+  height: 1000px;
+  width: 1000px;
+  
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.circle1{
+  right: -250px;
+  top: -250px;
+  background: #388f6854;
+
+}
+
+.circle2{
+  right: -550px;
+  top: -550px;
+  background: #388f6885;
+}
+
+.circle3{
+  left: -550px;
+  bottom: -550px;
+  background: #388f6885;
+
 }
 
 .mainContainer {
@@ -85,7 +135,7 @@ export default {
   transform: translate(-50%, -50%);
   z-index: 1;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   justify-content: space-around;
   /* width: 100%; */
 }
@@ -124,6 +174,7 @@ export default {
   transition: transform 0.3s ease;
   position: relative;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16), 0px 3px 6px rgba(0, 0, 0, 0.23);
+  animation: shuffle 0.5s ease;
 }
 
 .boggle-cell::before {
@@ -174,6 +225,16 @@ export default {
 .boggle-cell {
   width: 80px;
   height: 80px;
+}
+
+@keyframes shuffle{
+   0%{
+    transform: rotateX(10deg) rotateY(-10deg) translateZ(10px) scale(1.05);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.16), 0px 6px 12px rgba(0, 0, 0, 0.23);
+   }
+   100%{
+    box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.2);
+   } 
 }
 
 .refreshArea {

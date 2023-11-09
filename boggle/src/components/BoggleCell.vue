@@ -13,11 +13,17 @@ export default {
   },
   methods: {
     randomNumber() {
+              console.log(`size of usedDice: ${this.usedDice.size} size of dice-list: ${this.diceList.length}`);
+              if (this.diceList.length <= 0 || this.usedDice.size === 16) {
+                return null
+              } 
               let randomDice;
               do {
-                randomDice = Math.floor(Math.random() * 26);
-              } while (this.usedDice.has(randomDice));  
+                randomDice = Math.floor(Math.random() * 16);
+                console.log(`current random is :${randomDice}, is it already used: ${this.usedDice.has(randomDice)}`);
+              } while (this.usedDice.has(randomDice))
               this.$emit("minimizeDice", randomDice)
+              console.log("final random is:" + " " + this.diceList[randomDice]);
               return randomDice
           },
 
@@ -27,17 +33,11 @@ export default {
 },
 computed:{
     randomLetter() {  
-      const randomNum = this.randomNumber()
+      const randomNum = this.randomNumber();
       const randomNumSM = this.randomNumberSmall();
-      console.log("randoms" + " " + this.diceList[randomNum]);
-      // if (this.diceList.length > 0) {
-      //   const currentDice = this.diceList[randomNum];
-      //   // this.diceList.splice(randomNum, 1)
-      //   return currentDice[randomNumSM]
-      // } else {
-      //   return null;
-      // }
-      return this.diceList.length > 0 ? this.diceList[randomNum][randomNumSM] : null;
+      console.log("currentDice }}}}}" + " " + this.diceList[randomNum]);
+      console.log("randoms" + " " + randomNum);
+      return this.diceList.length >= 0 ? this.diceList[randomNum][randomNumSM] : null;
     }
   }
 };

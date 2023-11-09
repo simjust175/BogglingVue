@@ -39,6 +39,8 @@ export default {
     height: 400px;
     width: 50px;
     border: 1px solid #42b883;
+    background: #c1ffe38e;
+    backdrop-filter: blur(40px);
   }
 
   .timerBody{
@@ -52,7 +54,7 @@ export default {
     right: 0;
     /* animation: progress 20s linear; */
     animation-name: progress;
-    animation-duration: 30s;
+    animation-duration: 180s;
     animation-timing-function: linear;
   }
 

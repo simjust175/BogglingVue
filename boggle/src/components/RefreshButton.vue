@@ -1,4 +1,5 @@
 <template>
+  
   <div class="boggleItems refresh" @click="createArray">REFRESH BOARD</div>
 
   <!-- <div class="boggleItems popUp" :class="{hidden: !popUpStatus}">
@@ -18,32 +19,22 @@ export default {
   data() {
     return {
       letters: [],
-      lettersList: `000000
-aaafrs
-aaeeee
-aafirs
-adennn
-aeeeem
-aeegmu
-aegmnn
-afirsy
-bjkqxz
-ccenst
-ceiilt
-ceilpt
-ceipst
-ddhnot
-dhhlor
-dhlnor
-dhlnor
-eiiitt
-emottt
-ensssu
-fiprsy
-gorrvw
-iprrry
-nootuw
-ooottu`,
+      lettersList: `aaciot
+abilty
+abjmo1
+acdemp
+acelrs
+adenvz
+ahmors
+biforx
+denosw
+dknotu
+eefhiy
+egkluy
+egintv
+ehinps
+elpstu
+gilruw`,
     }
   },
   methods: {
@@ -51,6 +42,7 @@ ooottu`,
     createArray() {
       const letterArray = this.lettersList;
       this.letters = letterArray.split("\n").map((set) => set.split(""));
+      console.log("new array created !!!");
       this.$emit("createdList", this.letters)
     },
   },
@@ -81,6 +73,10 @@ ooottu`,
   transform: scale(1.05);
 }
 
+.refresh:active {
+  background: #318a62;
+  transform: scale(0.9);
+}
 .popUp {
   position: absolute;
   top: 45%;
